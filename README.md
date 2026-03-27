@@ -207,7 +207,7 @@ python src/rag/lab_rag_sparql_gen.py --model deepseek-r1:1.5b
 3. Pull a model if not yet done: `ollama pull deepseek-r1:1.5b`
 4. Launch the web interface:
    ```bash
-   streamlit run src/rag/app_ui.py
+   python -m streamlit run src/rag/app_ui.py
    ```
 5. Open `http://localhost:8501` in your browser.
 6. Type a medical question in the chat box, e.g.:
