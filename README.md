@@ -253,8 +253,4 @@ Wikipedia API
                      baseline comparison)
 ```
 
----
 
-## License
-
-MIT License — see `LICENSE` for details.
