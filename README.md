@@ -171,7 +171,7 @@ Outputs: `data/kge/` (splits), `results/TransE/`, `results/DistMult/`,
 
 **Web interface (Streamlit):**
 ```bash
-streamlit run src/rag/app_ui.py
+python -m streamlit run src/rag/app_ui.py
 ```
 
 Opens at `http://localhost:8501`. Shows Baseline vs RAG answers side by side, with the
