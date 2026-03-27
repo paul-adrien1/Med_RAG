@@ -178,7 +178,17 @@ The chatbot follows five steps: (1) build a schema summary from the graph; (2) a
 
 The key advantage: the RAG system returns verified KB facts with real names instead of hallucinated drug names.
 
-![RAG chatbot demo — template SPARQL returning resolved drug and symptom names](rag_demo_screenshot.png)
+![RAG terminal chatbot — template SPARQL returning resolved drug and symptom names](rag_demo_screenshot.png)
+
+### 5.2 Web Interface
+
+In addition to the terminal chatbot, we built a Streamlit web application (`src/rag/app_ui.py`) so that the evaluation is directly observable without reading terminal output. The decision to use Streamlit came from the need to present the Baseline vs RAG comparison in a visual format that matches the evaluation grid above: one column per approach, same question, same moment.
+
+The interface has three components. The **chat panel** sends each question to both pipelines simultaneously and displays the answers side by side. The **SPARQL transparency expander** shows the exact query executed against the graph and flags whether the self-repair loop was triggered. The **statistics sidebar** reads `kg_artifacts/stats.json` at startup to display the triple count, entity count, and relation count without querying the graph again.
+
+![Chat view — Baseline (LLM only) vs RAG (Knowledge Graph) answers for two medical questions](screen_app1.png)
+
+![SPARQL panel expanded — generated query and self-repair status visible](screen_app2.png)
 
 ---
 
@@ -199,7 +209,7 @@ Both approaches are complementary: SWRL for deterministic logical rules, TransE 
 ### 6.2 Limitations and Future Work
 
 - **NER noise**: Short tokens ("Ps:", "1") enter the KB as fake entities. Fix: reject entities under 3 characters or absent from a medical dictionary.
-- **LLM size**: `deepseek-r1:1.5b` fails to generate valid SPARQL reliably. Replacing it with a 7B+ model removes the need for template fallbacks.
+- **LLM size**: `deepseek-r1:1.5b` fails to generate valid SPARQL reliably. Replacing it with a 7B+ model removes the need for template fallbacks and would make the self-repair indicator in the web interface rarely trigger.
 - **KB scale**: Increasing the expansion cap from 50 to 500 Wikidata entities would target 500k+ triples and better KGE scores.
 - **Embedding quality**: GPU training with 200D embeddings and 500 epochs would push MRR above 0.35.
 

@@ -170,6 +170,7 @@ TOC_ENTRIES = [
     (1, "4.2  Nearest Neighbors and t-SNE"),
     (0, "5.  RAG Question-Answering System"),
     (1, "5.1  Evaluation"),
+    (1, "5.2  Web Interface (Streamlit)"),
     (0, "6.  Critical Reflection"),
     (1, "6.1  SWRL Rules vs. TransE Embeddings"),
     (1, "6.2  Limitations and Future Work"),
@@ -322,7 +323,12 @@ def parse_md(md_text):
         # H3
         if strip.startswith("### "):
             in_abstract = False
-            out.append(Paragraph(_inline(strip[4:].strip()), H3))
+            h3_title = strip[4:].strip()
+            # Force a new page before the Web Interface subsection so it
+            # lands on its own page with the two screenshots.
+            if h3_title.startswith("5.2"):
+                out.append(PageBreak())
+            out.append(Paragraph(_inline(h3_title), H3))
             i += 1; continue
 
         # Fenced code block
@@ -359,7 +365,12 @@ def parse_md(md_text):
             if img_path.exists():
                 max_w = W - 2*MARGIN - 0.8*cm
                 try:
-                    if "rag" in path.lower():
+                    if "screen_app" in path.lower():
+                        # Full-width screenshots for the Streamlit page
+                        img_w = 0.97 * (W - 2*MARGIN)
+                        img   = Image(str(img_path), width=img_w, height=7.5*cm,
+                                      kind="proportional")
+                    elif "rag" in path.lower():
                         # 95 % of text width; height capped to stay on the same page
                         img_w = 0.95 * (W - 2*MARGIN)
                         img   = Image(str(img_path), width=img_w, height=9.0*cm,

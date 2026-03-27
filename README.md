@@ -36,7 +36,8 @@ MedKG/
 │   │   ├── analyze_kge.py      # Nearest neighbors, t-SNE, relation analysis
 │   │   └── run_td5.py          # Runner: SWRL + prepare + train + analyze
 │   └── rag/
-│       └── lab_rag_sparql_gen.py  # RAG chatbot: NL -> SPARQL -> answers
+│       ├── lab_rag_sparql_gen.py  # RAG chatbot: NL -> SPARQL -> answers (terminal)
+│       └── app_ui.py              # Streamlit web interface (baseline vs RAG side-by-side)
 ├── data/
 │   ├── samples/                # Sample outputs committed to the repo
 │   │   ├── crawler_output.jsonl
@@ -168,7 +169,16 @@ Outputs: `data/kge/` (splits), `results/TransE/`, `results/DistMult/`,
 
 ### Module 5 — RAG over RDF/SPARQL
 
-**Interactive demo:**
+**Web interface (Streamlit):**
+```bash
+streamlit run src/rag/app_ui.py
+```
+
+Opens at `http://localhost:8501`. Shows Baseline vs RAG answers side by side, with the
+generated SPARQL query and self-repair status visible in an expandable panel.
+The sidebar displays graph statistics read from `kg_artifacts/stats.json`.
+
+**Terminal chatbot:**
 ```bash
 python src/rag/lab_rag_sparql_gen.py
 ```
@@ -194,18 +204,20 @@ python src/rag/lab_rag_sparql_gen.py --model deepseek-r1:1.5b
 
 1. Ensure the Knowledge Base has been built (Module 2 above).
 2. Start Ollama: `ollama serve`
-3. Pull a model if not yet done: `ollama pull gemma:2b`
-4. Run the interactive chatbot:
+3. Pull a model if not yet done: `ollama pull deepseek-r1:1.5b`
+4. Launch the web interface:
    ```bash
-   python src/rag/lab_rag_sparql_gen.py
+   streamlit run src/rag/app_ui.py
    ```
-5. Type a medical question at the prompt, e.g.:
+5. Open `http://localhost:8501` in your browser.
+6. Type a medical question in the chat box, e.g.:
    - `What are the symptoms of Diabetes?`
    - `What medications are used to treat Hypertension?`
    - `Which medical specialty handles Alzheimer's disease?`
-6. The system outputs both a baseline (LLM-only) answer and a SPARQL-RAG answer
-   retrieved directly from the Knowledge Graph.
-7. Type `quit` to exit.
+7. Both the Baseline (LLM-only) and RAG (Knowledge Graph) answers appear side by side.
+   Expand "Technical details" to inspect the generated SPARQL query and repair status.
+
+Alternatively, use the terminal chatbot: `python src/rag/lab_rag_sparql_gen.py`
 
 ![RAG Demo Screenshot](reports/rag_demo_screenshot.png)
 
