@@ -1,0 +1,31 @@
+{
+  "hyperparameters": {
+    "embedding_dim": 50,
+    "num_epochs": 100,
+    "batch_size": 512,
+    "learning_rate": 0.01,
+    "num_negs_per_pos": 5
+  },
+  "results": {
+    "TransE": {
+      "MRR": 0.1856,
+      "Hits@1": 0.0775,
+      "Hits@3": 0.2175,
+      "Hits@10": 0.3953
+    },
+    "DistMult": {
+      "MRR": 0.0327,
+      "Hits@1": 0.0015,
+      "Hits@3": 0.0098,
+      "Hits@10": 0.0825
+    },
+    "size_sensitivity": {
+      "full": {
+        "MRR": 0.1978,
+        "Hits@1": 0.0869,
+        "Hits@3": 0.2396,
+        "Hits@10": 0.4196
+      }
+    }
+  }
+}
